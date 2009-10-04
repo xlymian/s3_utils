@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 #
-# get_s3_object 0.1 - 2009-10-01
+# get_s3_object 0.1 - 2009-10-04
 # by Paul Mylchreest (paul.mylchreest@mac.com)
 #
-# This script allows you to download a s3 object to a file.
+# This script allows you to uplaod a s3 object to a file.
 
-# get_s3_object bucket filename s3_key access_key secret_access_key
+# put_s3_object bucket filename s3_key access_key secret_access_key
 
 require 'rubygems'
 require 'aws/s3'
@@ -35,6 +35,10 @@ def secret_access_key
   a ||= ENV['AMAZON_SECRET_ACCESS_KEY']
 end
 
+class S3UtilsConfig < AWS::S3::S3Object
+  set_current_bucket_to bucket
+end
+
 def establish_s3_connection
   AWS::S3::Base.establish_connection!(
     :access_key_id     => access_key,
@@ -44,11 +48,6 @@ end
 
 establish_s3_connection
 
-open(filename, 'w') do |file|
-  puts "Bucket: #{bucket}"
-  puts "Filename: #{filename}"
-  puts "Key: #{s3_key}"
-  AWS::S3::S3Object.stream(s3_key, bucket) do |chunk|
-    file.write chunk
-  end
-end
+S3UtilsConfig.store(s3_key, open(filename))
+config_bucket = AWS::S3::Bucket.find(bucket)
+puts "Bucket size: #{config_bucket.objects.size}"
