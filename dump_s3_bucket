@@ -6,6 +6,7 @@
 # This script allows you to dump a s3 bucket into the current directory.
 
 # dump_s3_bucket bucket access_key secret_access_key
+# See http://amazon.rubyforge.org/
 
 require 'rubygems'
 require 'aws/s3'

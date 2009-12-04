@@ -6,6 +6,7 @@
 # This script allows you to uplaod a s3 object to a file.
 
 # put_s3_object bucket filename s3_key access_key secret_access_key
+# See http://amazon.rubyforge.org/
 
 require 'rubygems'
 require 'aws/s3'
